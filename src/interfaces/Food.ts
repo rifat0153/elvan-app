@@ -5,4 +5,6 @@ export default interface Food {
   subtitle: string;
   price: number;
   quantity?: number;
+  category?:string;
+  addonType?: string;
 }

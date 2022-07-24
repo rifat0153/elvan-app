@@ -15,12 +15,14 @@ const BottomNav: FC = () => {
     <Tab.Navigator
       screenOptions={{
         tabBarShowLabel: false,
-        tabBarStyle: Styles.tabBar,
+        tabBarStyle: [Styles.tabBar],
+        
       }}>
       <Tab.Screen
         name="Home"
         component={Home}
         options={{
+          headerShown: false,
           tabBarIcon: ({focused}) => (
             <BottonNavButton
               focus={focused}
@@ -74,6 +76,7 @@ const BottomNav: FC = () => {
           ),
         }}
       />
+      
     </Tab.Navigator>
   );
 };
@@ -82,10 +85,11 @@ export default BottomNav;
 
 const Styles = ScaledSheet.create({
   container: {
-    display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    top: '180@s',
+    flexGrow: 1,
+    // display: 'flex',
+    // flexDirection: 'row',
+    // flexWrap: 'wrap',
+    // top: '180@s',
   },
   tabBar: {
     height: scale(70),

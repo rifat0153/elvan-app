@@ -2,8 +2,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, {FC} from 'react';
 import {Image, ImageBackground, Text, TouchableOpacity, View} from 'react-native';
 import {ScaledSheet} from 'react-native-size-matters';
-import { RootStackParamList } from '../navigation/NavigationTypes';
-import { UseCartStore } from '../zustand/CartStore';
+import {UseCartStore} from '../../zustand/CartStore';
 
 interface Props { 
   onPress: ()=> void;
@@ -15,7 +14,7 @@ const Cart: FC<Props> = (props) => {
       <View style={Styles.container}>
         <ImageBackground
           style={Styles.image}
-          source={require('../../assets/icons/cart.png')}>
+          source={require('../../../assets/icons/cart.png')}>
           <Text style={Styles.text}>{carstore.cartItems.length}</Text>
         </ImageBackground>
       </View>

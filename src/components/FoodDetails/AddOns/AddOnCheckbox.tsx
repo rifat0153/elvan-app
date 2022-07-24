@@ -2,36 +2,31 @@ import React, {FC, useEffect, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import CheckBox from 'react-native-check-box';
 import {scale, ScaledSheet} from 'react-native-size-matters';
-import { UseAddOnStore } from '../zustand/AddOnStore';
+import AddOn from '../../../interfaces/AddOn';
+import {UseAddOnStore} from '../../../zustand/AddOnStore';
 
-interface Addon {
-  name: string;
-  price: number;
-}
 interface Props {
-  addonlist: Addon[];
+  addonlist: AddOn[];
   // onClick: ()=> {};
 }
 const AddOnCheckbox: FC<Props> = props => {
- 
-
   const Addonlist = () => {
     return props.addonlist.map(addon => {
       const [check, setCheck] = useState(false);
-      const useAddOnStore = UseAddOnStore()
+      const useAddOnStore = UseAddOnStore();
 
-      useEffect(()=>{
+      useEffect(() => {
         if (check) {
           useAddOnStore.AddItem(addon);
         } else {
           useAddOnStore.RemoveItem(addon);
         }
-      },[check])
+      }, [check]);
 
       return (
         <View style={Styles.check}>
           <Text style={[Styles.Text, {flexBasis: '45%'}]}>{addon.name}</Text>
-          <Text style={[Styles.Text, {flexBasis: '40%'}]}>{addon.price}Kr</Text>
+          <Text style={[Styles.Text, {flexBasis: '40%'}]}>{addon.price}kr</Text>
           <CheckBox
             onClick={() => {
               setCheck(!check);

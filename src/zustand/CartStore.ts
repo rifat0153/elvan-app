@@ -1,24 +1,54 @@
 import create from 'zustand';
+import AddOn from '../interfaces/AddOn';
 import Food from '../interfaces/Food';
+import {UseAddOnStore} from './AddOnStore';
 
 type State = {
   totalPrice: number;
   cartItems: CartItem[];
 
   AddCartItem: (newCartItem: CartItem) => void;
-  IncreaseItemCount: (id: string, text: number) => void;
+  ChangeItemCount: (id: number, text: number) => void;
+  UpdateTotalPrice: () => void;
+  RemoveItem: (id: number) => void;
 };
 
 export type CartItem = {
-  itemCount: number;
+  cartid: number,
   food: Food;
+  itemCount: number;
+  addOn: AddOn[];
 };
 
-const increaseQuantity = (cartItems: CartItem[], id: string, text: number) =>
+const ChangeQuantity = (cartItems: CartItem[], id: number, text: number) =>
   cartItems.map(item => ({
     ...item,
-    itemCount: item.food.id == id ? item.itemCount + text : item.itemCount,
+    itemCount: item.cartid == id ? item.itemCount + text : item.itemCount,
   }));
+
+const AddToTotalPrice = (cartItem: CartItem) => {
+  let totalPrice = cartItem.food.price * cartItem.itemCount;
+  cartItem.addOn.map(addon => {
+    totalPrice += Number(addon.price);
+  });
+  return totalPrice;
+};
+
+const UpdateTotalPrice = (cartItems: CartItem[]) => {
+  if (cartItems.length == 0) return 0;
+  let totalPrice = 0;
+  cartItems.map(cartItem => {
+    totalPrice += cartItem.food.price * cartItem.itemCount;
+    cartItem.addOn.map(addon => {
+      totalPrice += Number(addon.price);
+    });
+  });
+  // console.log(totalPrice)
+  return totalPrice;
+};
+
+const Remove = (cartItems: CartItem[], id: number) =>
+  cartItems.filter(item => item.cartid != id);
 
 export const UseCartStore = create<State>(set => ({
   totalPrice: 0,
@@ -26,14 +56,29 @@ export const UseCartStore = create<State>(set => ({
 
   AddCartItem(newCartItem: CartItem) {
     set(state => ({
+      totalPrice: this.totalPrice + AddToTotalPrice(newCartItem),
       cartItems: [...state.cartItems, newCartItem],
     }));
   },
 
-  IncreaseItemCount(id, text) {
+  ChangeItemCount(cartid, text) {
     set(state => ({
       ...state,
-      cartItems: increaseQuantity(state.cartItems, id, text),
+      cartItems: ChangeQuantity(state.cartItems, cartid, text),
+    }));
+  },
+
+  UpdateTotalPrice() {
+    set(state => ({
+      ...state,
+      totalPrice: UpdateTotalPrice(this.cartItems),
+    }));
+  },
+
+  RemoveItem(id) {
+    set(state => ({
+      ...state,
+      cartItems: Remove(this.cartItems, id),
     }));
   },
 }));

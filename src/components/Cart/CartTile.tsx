@@ -10,11 +10,12 @@ import {
   ScrollView,
 } from 'react-native';
 import {ScaledSheet} from 'react-native-size-matters';
-import {IncreaseDecrease,TileFoodInfo} from '../components';
-import Food from '../interfaces/Food';
+import {IncreaseDecrease, TileFoodInfo} from '../../components';
+import Food from '../../interfaces/Food';
+import { CartItem } from '../../zustand/CartStore';
 
 interface Props {
-  food: Food;
+  cartFood: CartItem;
   onPress?: () => void;
 }
 
@@ -24,13 +25,13 @@ const CartTile: FC<Props> = props => {
     <View style={Styles.container}>
       <TouchableOpacity onPress={props.onPress}>
         <View style={Styles.tile}>
-          <TileFoodInfo food={props.food} />
+          <TileFoodInfo food={props.cartFood.food} />
           <View
             style={{
               left: -30,
               top:70
             }}>
-            <IncreaseDecrease/>
+            <IncreaseDecrease quantity={props.cartFood.itemCount} cartid={props.cartFood.cartid} removeOption/>
           </View>
         </View>
       </TouchableOpacity>

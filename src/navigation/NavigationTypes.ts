@@ -1,7 +1,7 @@
 import Food from '../interfaces/Food';
 
 export type RootStackParamList = {
-  FoodList: undefined;
+  FoodList: {category: string};
   FoodTile: undefined;
   FoodDetails: {food: Food};
   Home: undefined;
@@ -10,4 +10,6 @@ export type RootStackParamList = {
   OrderList: undefined;
   BottomNav: undefined;
   CartList: undefined;
+  MakePayment: undefined;
+  TrackOrder: undefined;
 };

@@ -1,34 +1,39 @@
-import {isEmpty} from '@firebase/util';
 import React, {FC, useEffect, useState} from 'react';
 import {Text, View} from 'react-native';
 import {ScaledSheet} from 'react-native-size-matters';
-import {UseAddOnStore} from '../zustand/AddOnStore';
-import TextButton from './TextButton';
-
+import AddOn from '../../../interfaces/AddOn';
+import {UseAddOnStore} from '../../../zustand/AddOnStore';
+import {TextButton} from '../../../components';
 interface Props {
   headerText: string;
-  itemlist: string[];
+  addonlist: AddOn[];
 }
 
 const AddOnButton: FC<Props> = props => {
-  const [selectedItem, setSelectedItem] = useState<string>();
+  const [selectedItem, setSelectedItem] = useState<string>('');
   const useAddOnStore = UseAddOnStore();
 
   useEffect(() => {
-    useAddOnStore.AddOneItem({name: selectedItem});
+    if (selectedItem) {
+      useAddOnStore.EmptyItems()
+      useAddOnStore.AddItem({name: selectedItem, price: 0});
+    }
+    else{
+      useAddOnStore.EmptyItems()
+    }
   }, [selectedItem]);
 
   const Buttonlist = () => {
-    return props.itemlist.map(item => {
+    return props.addonlist.map(item => {
       return (
         <View style={{marginLeft: 20, marginBottom: 21}}>
           <TextButton
-            text={item}
+            text={item.name}
             height={35}
             width={120}
-            color={selectedItem != item ? '#2A2630' : '#F0F5F9'}
-            bcolor={selectedItem != item ? '#E5251A4D' : '#E5251A'}
-            onPress={() => setSelectedItem(item)}
+            color={selectedItem != item.name ? '#2A2630' : '#F0F5F9'}
+            bcolor={selectedItem != item.name ? '#E5251A4D' : '#E5251A'}
+            onPress={() => setSelectedItem(item.name)}
           />
         </View>
       );

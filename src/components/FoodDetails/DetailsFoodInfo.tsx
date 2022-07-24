@@ -1,14 +1,26 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
 import {scale, ScaledSheet} from 'react-native-size-matters';
-import Food from '../interfaces/Food';
-import IncreaseDecrease from './IncreaseDecrease';
+import Food from '../../interfaces/Food';
+import {UsePriceQuantityStore} from '../../zustand/PriceQuantityStore';
+import {IncreaseDecrease} from '../../components';
 
 interface Props {
   food: Food;
 }
 
 const DetailsFoodInfo: FC<Props> = props => {
+  const [lbcolor, setLBcolor] = useState('#E5251A');
+
+  const priceQuantityStore = UsePriceQuantityStore();
+  useEffect(() => {
+    if (priceQuantityStore.quantity == 1) {
+      setLBcolor('#E5251A4D');
+    }
+    else{
+      setLBcolor('#E5251A');
+    }
+  }, [priceQuantityStore]);
   return (
     <View>
       <View style={{alignItems: 'center'}}>
@@ -18,7 +30,7 @@ const DetailsFoodInfo: FC<Props> = props => {
 
       <View style={Styles.princrdec}>
         <Text style={Styles.price}>{props.food.price}Kr</Text>
-        <IncreaseDecrease color="#E5251A" />
+        <IncreaseDecrease rbcolor="#E5251A" lbcolor={lbcolor} color="#F0F5F9" />
       </View>
     </View>
   );

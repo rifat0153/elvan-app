@@ -1,11 +1,45 @@
-import React, {FC} from 'react';
-import {Text, View} from 'react-native';
-import {ScaledSheet} from 'react-native-size-matters';
+import React, {FC, useEffect} from 'react';
+import {Dimensions, Image, ScrollView, Text, View} from 'react-native';
+import {scale, ScaledSheet} from 'react-native-size-matters';
+import {FoodTile} from '../components';
+import Food from '../interfaces/Food';
+import {UseFavoritesStore} from '../zustand/FavoritesList';
 
+const Height = Dimensions.get('window').height;
 const Favorites: FC = () => {
+  const favoritesStore = UseFavoritesStore();
+  const FoodTiles = () => {
+    if (favoritesStore.FoodItems.length == 0) {
+      return (
+        <View style={Styles.emptyContainer}>
+          <Image
+            source={require('../../assets/icons/empty.png')}
+            style={Styles.image}
+            resizeMode="contain"
+          />
+          <Text style={Styles.text}>Your favorite is empty!</Text>
+        </View>
+      );
+    }
+    return favoritesStore.FoodItems.map((food: Food) => {
+      return (
+        <View key={food.id}>
+          <FoodTile food={food} />
+        </View>
+      );
+    });
+  };
   return (
-    <View style={Styles.container}>
-      <Text style={Styles.text}>Favorites Screen</Text>
+    <View>
+      <Image
+        style={{height: scale(Height), width: scale(350), position: 'absolute'}}
+        resizeMode="cover"
+        blurRadius={10}
+        source={require('../../assets/images/elvan.png')}
+      />
+      <ScrollView>
+        <View>{FoodTiles()}</View>
+      </ScrollView>
     </View>
   );
 };
@@ -17,7 +51,19 @@ const Styles = ScaledSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+
+  image: {
+    height: '124.2@s',
+    width: '124.18@s',
+  },
+  emptyContainer: {
+    alignItems: 'center',
+    marginTop: '220@s',
+  },
   text: {
-    color: '#2A2630',
+    color: '#F0F5F9',
+    fontWeight: '900',
+    fontSize: 16,
+    marginTop: '23.5@s',
   },
 });

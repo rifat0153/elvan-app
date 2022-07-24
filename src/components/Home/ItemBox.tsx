@@ -5,10 +5,11 @@ import {scale, ScaledSheet} from 'react-native-size-matters';
 interface Props {
   image: string;
   name: string;
+  onPress: ()=> void;
 }
 const ItemBox: FC<Props> = props => {
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={props.onPress}>
       <View style={Styles.container}>
         <View style={Styles.rectangle}></View>
         <Image source={{uri: props.image}} style={Styles.image} />
@@ -29,9 +30,9 @@ const Styles = ScaledSheet.create({
     height: '122@s',
     width: '158@s',
     backgroundColor: '#F0F5F9',
-    // opacity: 0.015,
-    opacity: 0.05,
+    opacity: 0.15,
     marginLeft: '13@s',
+    borderRadius: 5,
   },
   image: {
     width: '155@s',
