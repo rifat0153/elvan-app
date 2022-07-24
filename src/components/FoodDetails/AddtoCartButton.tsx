@@ -1,13 +1,12 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {
   View,
   Dimensions,
-  Button,
-  StyleSheet,
   TouchableOpacity,
   Text,
 } from 'react-native';
 import { ScaledSheet } from 'react-native-size-matters';
+import {UseAddOnStore} from '../../zustand/AddOnStore';
 
 const {height, width} = Dimensions.get('screen');
 
@@ -19,8 +18,12 @@ interface Props {
 }
 
 const AddtoCartButton: FC<Props> = props => {
+  const addOnStore = UseAddOnStore();
+  
   return (
-    <TouchableOpacity style={Styles.container} onPress={props.onPress}>
+    <TouchableOpacity
+      style={Styles.container}
+      onPress={props.onPress}>
       <Text style={[Styles.text, {flexBasis: '20%', marginStart: 20}]}>
         {props.left}
       </Text>
@@ -36,16 +39,16 @@ const Styles = ScaledSheet.create({
   container: {
     display: 'flex',
     flexDirection: 'row',
-    backgroundColor: '#E5251A',
     alignItems: 'center',
     alignSelf: 'center',
     padding: '10@s',
-    width: '343@s',
+    width: '333@s',
     height: '50@s',
     borderRadius: '10@s',
     justifyContent: 'space-between',
     marginTop: '40@s',
-    marginBottom: '45@s'
+    marginBottom: '45@s',
+    backgroundColor: '#E5251A',
   },
   text: {
     color: '#F0F5F9',

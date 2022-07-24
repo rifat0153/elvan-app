@@ -8,7 +8,7 @@ interface Props {
   width: number;
   color: string;
   bcolor: string;
-  onPress?: ()=> void;
+  onPress?: ()=> void
 }
 const TextButton: FC<Props> = props => {
   return (

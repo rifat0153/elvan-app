@@ -40,6 +40,7 @@ const Styles = ScaledSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
 
+
     height: '48@s',
     width: '130@s',
     borderColor: '#E5251A',

@@ -20,14 +20,12 @@ import {
 import {Calculation} from '../components';
 import {RootStackParamList} from '../navigation/NavigationTypes';
 import {UseCartStore} from '../zustand/CartStore';
-import uuid from 'react-native-uuid';
 
 const Height = Dimensions.get('window').height;
 type Props = NativeStackScreenProps<RootStackParamList>;
-const CartList: FC<Props> = ({navigation}) => {
+const MakePayment: FC<Props> = ({navigation}) => {
   const cartStore = UseCartStore();
   const [totalPrice, setTotalPrice] = useState<number>(cartStore.totalPrice);
-  const [schedule, setSchedule] = useState<boolean>(false);
 
   useEffect(() => {
     cartStore.UpdateTotalPrice();
@@ -38,15 +36,6 @@ const CartList: FC<Props> = ({navigation}) => {
     setTotalPrice(cartStore.totalPrice);
   }, [cartStore]);
 
-  const CartTiles = () => {
-    return cartStore.cartItems.map(cartItem => {
-      return (
-        <View>
-          <CartTile cartFood={cartItem} />
-        </View>
-      );
-    });
-  };
   return (
     <View>
       <Image
@@ -56,23 +45,22 @@ const CartList: FC<Props> = ({navigation}) => {
         source={require('../../assets/images/elvan.png')}
       />
       <ScrollView>
-        <View>{CartTiles()}</View>
         <View style={Styles.Calculation}>
           <Calculation
             subTotal={totalPrice}
             deliveryCharge={totalPrice == 0 ? 0 : 100}></Calculation>
         </View>
 
-        <Schedule />
+        <ExpandButton />
 
         <View style={Styles.next}>
           <TextButton
-            text="Next"
+            text="Confirm Payment"
             height={50}
             width={333}
             color="#F0F5F9"
             bcolor="#E5251A"
-            onPress={() => navigation.navigate('MakePayment')}
+            onPress={() => navigation.navigate('TrackOrder')}
           />
         </View>
       </ScrollView>
@@ -80,7 +68,7 @@ const CartList: FC<Props> = ({navigation}) => {
   );
 };
 
-export default CartList;
+export default MakePayment;
 
 const Styles = ScaledSheet.create({
   Calculation: {

@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
 import {scale, ScaledSheet} from 'react-native-size-matters';
 import { SharedElement } from 'react-navigation-shared-element';
-import Food from '../interfaces/Food';
+import Food from '../../interfaces/Food';
 
 interface Props {
      food: Food

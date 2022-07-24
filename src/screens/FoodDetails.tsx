@@ -5,23 +5,30 @@ import {RootStackParamList} from '../navigation/NavigationTypes';
 import {
   AddOnCheckbox,
   AddtoCartButton,
-  IncreaseDecrease,
   DetailsFoodInfo,
   AddOnButton,
+  AddOnImage,
 } from '../components';
-import {scale, ScaledSheet} from 'react-native-size-matters';
+import {ScaledSheet} from 'react-native-size-matters';
 import Food from '../interfaces/Food';
-import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
+import {RouteProp, useRoute} from '@react-navigation/native';
 
 import {UsePriceQuantityStore} from '../zustand/PriceQuantityStore'; //zustand
 import {UseCartStore, CartItem} from '../zustand/CartStore'; //zustand
 import {ScrollView} from 'react-native-gesture-handler';
 import {SharedElement} from 'react-navigation-shared-element';
+import {UseAddOnStore} from '../zustand/AddOnStore';
+import AddOn from '../interfaces/AddOn';
+import {UseAddOnList} from '../zustand/AddOnList';
 
 type Props = NativeStackScreenProps<RootStackParamList>;
 
 const FoodDetails: FC<Props> = () => {
   const [itemCount, setitemCount] = useState(0);
+  const [addOn, setAddOn] = useState<Array<AddOn>>([]);
+  const [addOnTotalPrice, setAddOnTotalPrice] = useState<number>(0);
+  const [addOnItems, setAddOnItems] = useState<AddOn[]>([]);
+  const addOnList = UseAddOnList();
 
   const router = useRoute<RouteProp<RootStackParamList, 'FoodDetails'>>();
   const params = router.params;
@@ -29,39 +36,43 @@ const FoodDetails: FC<Props> = () => {
 
   const priceQuantityStore = UsePriceQuantityStore();
   const cartStore = UseCartStore();
+  const addOnStore = UseAddOnStore();
+  const [cartid, setCartid] = useState<number>(cartStore.cartItems.length);
 
   const AddToCart = () => {
+    setCartid(cartid + 1);
     const newCartItem: CartItem = {
+      cartid,
       food,
       itemCount,
+      addOn,
     };
-
-    const found = cartStore.cartItems.find(item => {
-      if (newCartItem.food.id == item.food.id) {
-        return true;
-      }
-      return false;
-    });
-
-    if (found) {
-      cartStore.IncreaseItemCount(food.id, newCartItem.itemCount);
-    } else {
-      cartStore.AddCartItem(newCartItem);
-    }
+    cartStore.AddCartItem(newCartItem);
+    console.log(cartid);
   };
 
   useEffect(() => {
-    priceQuantityStore.changeQuantity(1);
     priceQuantityStore.changePrice(food.price);
+    priceQuantityStore.changeQuantity(1);
+    addOnList.items.map(item => {
+      if (item.category == food.category) {
+        setAddOnItems(addOnItems => [...addOnItems, item]);
+      }
+    });
   }, []);
 
   useEffect(() => {
     setitemCount(priceQuantityStore.quantity);
-  }, [priceQuantityStore.quantity]);
+  }, [priceQuantityStore]);
 
   useEffect(() => {
-    console.log(cartStore.cartItems);
-  }, [cartStore.cartItems]);
+    setAddOn(addOnStore.items);
+    let total = 0;
+    addOnStore.items.map(item => {
+      total += Number(item.price);
+    });
+    setAddOnTotalPrice(total);
+  }, [addOnStore.items]);
 
   return (
     <ScrollView>
@@ -75,28 +86,50 @@ const FoodDetails: FC<Props> = () => {
           />
         </SharedElement>
         <View style={Styles.lowerpart}>
-          <DetailsFoodInfo food={food} />
+          {food.addonType == 'salad' ? null : <DetailsFoodInfo food={food} />}
+          {food.addonType == 'checkbox' ? (
+            <AddOnCheckbox addonlist={addOnItems} />
+          ) : null}
+          {food.addonType == 'button' ? (
+            <AddOnButton
+              headerText="Choose Your Sauce"
+              addonlist={addOnItems}
+            />
+          ) : null}
 
-          {/* <AddOnCheckbox
-            addonlist={[
-              {name: 'Extra Sauce', price: 20},
-              {name: 'Extra Cheese', price: 30},
-              {name: 'Extra Mayo', price: 20},
-              {name: 'Extra Fries', price: 30},
-            ]}
-           
-          /> */}
-          <AddOnButton
-            headerText="Choose Your Sauce"
-            itemlist={['Garlic', 'Tomato', 'Classic', 'Special']}
-          />
+          {food.addonType == 'salad' ? (
+            <AddOnImage
+              header="Choose base"
+              price={155}
+              items={[
+                {name: 'Meat', image: '../../assets/images/tomato.png'},
+                {name: 'Fish', image: '../../assets/images/tomato.png'},
+                {name: 'Mix', image: '../../assets/images/tomato.png'},
+              ]}
+              selectionType="Single"
+            />
+          ) : null}
+
+          {food.addonType == 'salad' ? (
+            <AddOnImage
+              header="Choose Protien"
+              price={155}
+              items={[
+                {name: 'Crab', image: '../../assets/images/tomato.png'},
+                {name: 'Chicken', image: '../../assets/images/tomato.png'},
+                {name: 'Tuna Fish', image: '../../assets/images/tomato.png'},
+              ]}
+              selectionType="multiple"
+            />
+          ) : null}
 
           <View>
             <AddtoCartButton
               title="Add to cart"
               left={
                 (
-                  priceQuantityStore.price * priceQuantityStore.quantity
+                  (priceQuantityStore.price + addOnTotalPrice) *
+                  priceQuantityStore.quantity
                 ).toString() + 'Kr'
               }
               right={priceQuantityStore.quantity?.toString()}

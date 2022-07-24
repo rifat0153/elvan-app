@@ -2,14 +2,14 @@ import React, {FC} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createSharedElementStackNavigator} from 'react-navigation-shared-element';
 import {RootStackParamList} from './NavigationTypes';
-import {FoodList, FoodDetails, CartList} from '../screens';
+import {FoodList, FoodDetails, CartList, MakePayment, TrackOrder} from '../screens';
 import BottomNav from './BottomNav';
 
 const Stack = createSharedElementStackNavigator<RootStackParamList>();
 
 const AppStack: FC = () => {
   return (
-    <Stack.Navigator initialRouteName="FoodList">
+    <Stack.Navigator initialRouteName="BottomNav">
       <Stack.Screen
         name="BottomNav"
         component={BottomNav}
@@ -37,6 +37,8 @@ const AppStack: FC = () => {
         })}
       />
       <Stack.Screen name="CartList" component={CartList} />
+      <Stack.Screen name="MakePayment" component={MakePayment} />
+      <Stack.Screen name="TrackOrder" component={TrackOrder} />
     </Stack.Navigator>
   );
 };
