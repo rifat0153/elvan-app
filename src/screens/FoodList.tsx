@@ -1,6 +1,6 @@
-import React, {FC, useCallback, useEffect, useState} from 'react';
+import React, {FC, useCallback, useEffect, useRef, useState} from 'react';
 import {View, Image, Dimensions} from 'react-native';
-import {Cart, FoodTile} from '../components';
+import {Cart, FoodTile, Search, Sort} from '../components';
 
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../navigation/NavigationTypes';
@@ -11,6 +11,7 @@ import {scale, ScaledSheet} from 'react-native-size-matters';
 import {RouteProp, useRoute} from '@react-navigation/native';
 import {UseFoodStore} from '../zustand/FoodMenuList';
 import {UseCartStore} from '../zustand/CartStore';
+import {UseModalStore} from '../zustand/ModalVisible';
 
 const Height = Dimensions.get('window').height;
 
@@ -21,9 +22,27 @@ const FoodList: FC<Props> = ({navigation}) => {
   const category = params.category;
   const foodStore = UseFoodStore();
   const cartStore = UseCartStore();
+  const [foodlist, setFoodList] = useState(foodStore.FoodItems);
+  const modalStore = UseModalStore();
+
+  const handleChange = (text: string) => {
+    if (text.length > 0) {
+      setFoodList(
+        foodStore.FoodItems.filter(item => {
+          return item.title.toLowerCase().match(text.toLowerCase());
+        }),
+      );
+      return;
+    }
+    setFoodList(foodStore.FoodItems);
+  };
+
+  useEffect(() => {
+    FoodTiles();
+  }, [foodlist]);
 
   const FoodTiles = () => {
-    return foodStore.FoodItems.map((food: Food) => {
+    return foodlist.map((food: Food) => {
       if (food.category == category) {
         return (
           <View key={food.id}>
@@ -54,6 +73,11 @@ const FoodList: FC<Props> = ({navigation}) => {
       <View style={Styles.cart}>
         <Cart onPress={() => navigation.navigate('CartList')} />
       </View>
+      <Search
+        onChangeText={text => handleChange(text)}
+        onPressSort={() => modalStore.ModalVisibility(true)}
+      />
+      {modalStore.isModalVisible ? <Sort/> : null}
       <ScrollView>
         <View>{FoodTiles()}</View>
       </ScrollView>

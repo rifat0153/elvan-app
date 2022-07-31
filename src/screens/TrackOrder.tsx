@@ -69,7 +69,6 @@ const TrackOrder: FC<Props> = () => {
           </View>
           <View style={[Styles.rectangle, {}]} />
         </View>
-
         {/* //////////////////////////////////////////////////////////*/}
 
         <View style={Styles.Calculation}>
