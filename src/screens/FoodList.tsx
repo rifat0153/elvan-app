@@ -12,6 +12,7 @@ import {RouteProp, useRoute} from '@react-navigation/native';
 import {UseFoodStore} from '../zustand/FoodMenuList';
 import {UseCartStore} from '../zustand/CartStore';
 import {UseModalStore} from '../zustand/ModalVisible';
+import {UseSortStore} from '../zustand/SortStore';
 
 const Height = Dimensions.get('window').height;
 
@@ -24,6 +25,26 @@ const FoodList: FC<Props> = ({navigation}) => {
   const cartStore = UseCartStore();
   const [foodlist, setFoodList] = useState(foodStore.FoodItems);
   const modalStore = UseModalStore();
+  const sortStore = UseSortStore();
+  const [fixedPR, setFixedPR] = useState<Array<number>>([1, 100]);
+
+  useEffect(() => {
+    sortStore.setPriceOrder('');
+  }, []);
+  useEffect(() => {
+    sortStore.setPriceRange(Math.min(...fixedPR), Math.max(...fixedPR));
+    sortStore.changePriceMax(Math.max(...fixedPR));
+  }, [fixedPR]);
+
+  useEffect(() => {
+    if (sortStore.priceMax > 0) {
+      setFoodList(
+        foodStore.FoodItems.filter(item => {
+          return item.price <= sortStore.priceMax;
+        }),
+      );
+    }
+  }, [sortStore.priceMax]);
 
   const handleChange = (text: string) => {
     if (text.length > 0) {
@@ -40,6 +61,19 @@ const FoodList: FC<Props> = ({navigation}) => {
   useEffect(() => {
     FoodTiles();
   }, [foodlist]);
+
+  useEffect(() => {
+    setFoodList(foodStore.FoodItems);
+  }, [sortStore.priceOrder]);
+
+  useEffect(() => {
+    setFixedPR([]);
+    foodStore.FoodItems.map(food => {
+      if (food.category == category) {
+        setFixedPR(fixedPR => [...fixedPR, food.price]);
+      }
+    });
+  }, [foodStore]);
 
   const FoodTiles = () => {
     return foodlist.map((food: Food) => {
@@ -77,7 +111,7 @@ const FoodList: FC<Props> = ({navigation}) => {
         onChangeText={text => handleChange(text)}
         onPressSort={() => modalStore.ModalVisibility(true)}
       />
-      {modalStore.isModalVisible ? <Sort/> : null}
+      {modalStore.isModalVisible ? <Sort /> : null}
       <ScrollView>
         <View>{FoodTiles()}</View>
       </ScrollView>

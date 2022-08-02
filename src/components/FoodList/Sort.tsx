@@ -1,24 +1,43 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {Image, Text, TouchableOpacity, View} from 'react-native';
 import {scale, ScaledSheet} from 'react-native-size-matters';
 import Modal from 'react-native-modal';
 import {UseModalStore} from '../../zustand/ModalVisible';
 import Slider from '@react-native-community/slider';
-import {TextButton} from '../../components';
+import {TextButton, PriceOptions} from '../../components';
+import {UseSortStore} from '../../zustand/SortStore';
+import {UseFoodStore} from '../../zustand/FoodMenuList';
 
 const Sort: FC = props => {
   const modalStore = UseModalStore();
   const [minVal, setMinVal] = useState(0);
   const [maxVal, setMaxVal] = useState(100);
-  const [val, setVal] = useState(0);
+  const [val, setVal] = useState<number>(0);
+  const [v, setV] = useState<number>(0);
 
   const [sortBy, setSortBy] = useState(['Meat', 'Vegan']);
   const [selectedSortBy, setSelectedSortBy] = useState<string>('');
-
-  const [priceRange, setPriceRange] = useState(['Low to High', 'High to Low']);
-  const [selectedPR, setSelectedPR] = useState<string>('');
-
+  const sortStore = UseSortStore();
+  const foodStore = UseFoodStore();
+  const Apply = () => {
+    
+    if (sortStore.priceOrder == 'High to Low') {
+      foodStore.FoodItems.sort((a, b) => b.price - a.price);
+    }
+    if (sortStore.priceOrder == 'Low to High') {
+      foodStore.FoodItems.sort((a, b) => a.price - b.price);
+      // console.log(sortStore.priceOrder);
+    }
+    if (val > 0) {
+      sortStore.changePriceMax(val);
+    }
+    modalStore.ModalVisibility(false);
+  };
   const SortOptions = () => {
+    useEffect(() => {
+      setMinVal(sortStore.priceRange.min);
+      setMaxVal(sortStore.priceRange.max);
+    }, [sortStore.priceRange]);
     return sortBy.map(item => {
       return (
         <View style={{marginLeft: 20, marginBottom: 21}}>
@@ -35,23 +54,6 @@ const Sort: FC = props => {
     });
   };
 
-  const PriceOptions = () => {
-    return priceRange.map(item => {
-      return (
-        <View style={{marginLeft: 20, marginBottom: 21}}>
-          <TextButton
-            text={item}
-            height={35}
-            width={120}
-            color={selectedPR != item ? '#2A2630' : '#F0F5F9'}
-            bcolor={selectedPR != item ? '#E5251A4D' : '#E5251A'}
-            onPress={() => setSelectedPR(item)}
-          />
-        </View>
-      );
-    });
-  };
-
   return (
     <View>
       <Modal isVisible={modalStore.isModalVisible}>
@@ -59,14 +61,7 @@ const Sort: FC = props => {
           <TouchableOpacity onPress={() => modalStore.ModalVisibility(false)}>
             <Image
               source={require('../../../assets/icons/exit.png')}
-              style={{
-                height: scale(12),
-                width: scale(12),
-                resizeMode: 'contain',
-                position: 'absolute',
-                right: 10,
-                bottom: 0,
-              }}
+              style={Styles.exitIcon}
             />
           </TouchableOpacity>
 
@@ -79,9 +74,9 @@ const Sort: FC = props => {
 
           {/* /////////price-start/////// */}
           <Text style={Styles.optionTitle}>Price</Text>
-          <View style={[Styles.flexRow, {marginLeft: -20}]}>
-            {PriceOptions()}
-          </View>
+
+          <PriceOptions />
+
           {/* /////////price-end/////// */}
 
           {/* /////////slider-start/////// */}
@@ -95,9 +90,12 @@ const Sort: FC = props => {
               minimumTrackTintColor="#E5251A"
               maximumTrackTintColor="#747276"
               thumbTintColor="#E5251A"
+              value={sortStore.priceMax}
               onValueChange={value => setVal(value)}
             />
-            <Text style={[Styles.val, {marginLeft: scale(25)}]}>{maxVal}</Text>
+            <Text style={[Styles.val, {marginLeft: scale(25)}]}>
+              {Math.round(val)}
+            </Text>
           </View>
           {/* /////////slider-end/////// */}
           <View style={Styles.apply}>
@@ -107,7 +105,7 @@ const Sort: FC = props => {
               width={138}
               color="#F0F5F9"
               bcolor="#E5251A"
-              onPress={() => '#'}
+              onPress={() => Apply()}
             />
           </View>
         </View>
@@ -149,5 +147,13 @@ const Styles = ScaledSheet.create({
   apply: {
     alignSelf: 'center',
     marginTop: '20@s',
+  },
+  exitIcon: {
+    height: scale(12),
+    width: scale(12),
+    resizeMode: 'contain',
+    position: 'absolute',
+    right: 10,
+    bottom: 0,
   },
 });

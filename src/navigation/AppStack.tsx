@@ -2,7 +2,13 @@ import React, {FC} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createSharedElementStackNavigator} from 'react-navigation-shared-element';
 import {RootStackParamList} from './NavigationTypes';
-import {FoodList, FoodDetails, CartList, MakePayment, TrackOrder} from '../screens';
+import {
+  FoodList,
+  FoodDetails,
+  CartList,
+  MakePayment,
+  TrackOrder,
+} from '../screens';
 import BottomNav from './BottomNav';
 
 const Stack = createSharedElementStackNavigator<RootStackParamList>();

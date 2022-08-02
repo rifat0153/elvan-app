@@ -19,6 +19,7 @@ import TextIconButton from './Buttons/TextIconButton';
 import RadioButton from './Buttons/RadioButton';
 import Search from './FoodList/Search';
 import Sort from './FoodList/Sort';
+import PriceOptions from './FoodList/PriceOptions';
 
 export {
   FoodTile,
@@ -42,4 +43,5 @@ export {
   RadioButton,
   Search,
   Sort,
+  PriceOptions,
 };

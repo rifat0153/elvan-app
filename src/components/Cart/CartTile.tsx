@@ -12,7 +12,7 @@ import {
 import {ScaledSheet} from 'react-native-size-matters';
 import {IncreaseDecrease, TileFoodInfo} from '../../components';
 import Food from '../../interfaces/Food';
-import { CartItem } from '../../zustand/CartStore';
+import {CartItem} from '../../zustand/CartStore';
 
 interface Props {
   cartFood: CartItem;
@@ -20,7 +20,6 @@ interface Props {
 }
 
 const CartTile: FC<Props> = props => {
-
   return (
     <View style={Styles.container}>
       <TouchableOpacity onPress={props.onPress}>
@@ -29,9 +28,13 @@ const CartTile: FC<Props> = props => {
           <View
             style={{
               left: -30,
-              top:70
+              top: 70,
             }}>
-            <IncreaseDecrease quantity={props.cartFood.itemCount} cartid={props.cartFood.cartid} removeOption/>
+            <IncreaseDecrease
+              quantity={props.cartFood.itemCount}
+              cartid={props.cartFood.cartid}
+              removeOption
+            />
           </View>
         </View>
       </TouchableOpacity>

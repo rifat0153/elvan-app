@@ -20,6 +20,7 @@ import {SharedElement} from 'react-navigation-shared-element';
 import {UseAddOnStore} from '../zustand/AddOnStore';
 import AddOn from '../interfaces/AddOn';
 import {UseAddOnList} from '../zustand/AddOnList';
+import uuid from 'react-native-uuid';
 
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -37,15 +38,14 @@ const FoodDetails: FC<Props> = () => {
   const priceQuantityStore = UsePriceQuantityStore();
   const cartStore = UseCartStore();
   const addOnStore = UseAddOnStore();
-  const [cartid, setCartid] = useState<number>(cartStore.cartItems.length);
 
   const AddToCart = () => {
-    setCartid(cartid + 1);
+    let cartid: string = uuid.v4().toString();
     const newCartItem: CartItem = {
-      cartid,
       food,
       itemCount,
       addOn,
+      cartid,
     };
     cartStore.AddCartItem(newCartItem);
     console.log(cartid);

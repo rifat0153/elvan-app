@@ -8,19 +8,19 @@ type State = {
   cartItems: CartItem[];
 
   AddCartItem: (newCartItem: CartItem) => void;
-  ChangeItemCount: (id: number, text: number) => void;
+  ChangeItemCount: (id: string, text: number) => void;
   UpdateTotalPrice: () => void;
-  RemoveItem: (id: number) => void;
+  RemoveItem: (id: string) => void;
 };
 
 export type CartItem = {
-  cartid: number,
+  cartid: string,
   food: Food;
   itemCount: number;
   addOn: AddOn[];
 };
 
-const ChangeQuantity = (cartItems: CartItem[], id: number, text: number) =>
+const ChangeQuantity = (cartItems: CartItem[], id: string, text: number) =>
   cartItems.map(item => ({
     ...item,
     itemCount: item.cartid == id ? item.itemCount + text : item.itemCount,
@@ -47,7 +47,7 @@ const UpdateTotalPrice = (cartItems: CartItem[]) => {
   return totalPrice;
 };
 
-const Remove = (cartItems: CartItem[], id: number) =>
+const Remove = (cartItems: CartItem[], id: string) =>
   cartItems.filter(item => item.cartid != id);
 
 export const UseCartStore = create<State>(set => ({

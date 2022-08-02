@@ -5,7 +5,7 @@ import {UseCartStore} from '../../zustand/CartStore';
 import {UsePriceQuantityStore} from '../../zustand/PriceQuantityStore'; //zustand
 
 interface Props {
-  cartid?: number;
+  cartid?: string;
   color?: string;
   lbcolor?: string;
   rbcolor?: string;
@@ -21,7 +21,7 @@ const IncreaseDecrease: FC<Props> = props => {
     if (props.quantity) {
       setCount(props.quantity);
     }
-  }, []);
+  }, [cartStore.cartItems]);
 
   useEffect(() => {
     cartStore.UpdateTotalPrice();
@@ -37,11 +37,8 @@ const IncreaseDecrease: FC<Props> = props => {
   };
 
   const decrement = () => {
-    console.log(props.removeOption, count,props.cartid );
     if (props.removeOption && count == 1 && props.cartid) {
       cartStore.RemoveItem(props.cartid);
-      cartStore.UpdateTotalPrice();
-      
       return;
     }
     if (count > 1) {
