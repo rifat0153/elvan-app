@@ -19,6 +19,8 @@ target 'RestaurantPickup' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
+  pod 'react-native-slider', :path => '../node_modules/@react-native-community/slider'
+
   target 'RestaurantPickupTests' do
     inherit! :complete
     # Pods for testing

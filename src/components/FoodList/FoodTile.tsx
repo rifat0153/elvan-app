@@ -18,6 +18,7 @@ import AddOn from '../../interfaces/AddOn';
 import Food from '../../interfaces/Food';
 import {RootStackParamList} from '../../navigation/NavigationTypes';
 import {CartItem, UseCartStore} from '../../zustand/CartStore';
+import uuid from 'react-native-uuid';
 
 interface Props {
   food: Food;
@@ -33,12 +34,12 @@ const FoodTile: FC<Props> = props => {
 
   const cartStore = UseCartStore();
   const isFocused = useIsFocused();
-  const [cartid, setCartid] = useState<number>(cartStore.cartItems.length);
+  // const [cartid, setCartid] = useState<number>(cartStore.cartItems.length);
 
   const Add = () => {
-    setCartid(cartid + 1);
     if (addText == 'Add') {
       setAddText('Added');
+      let cartid: string = uuid.v4().toString();
       const newCartItem: CartItem = {
         food,
         itemCount,

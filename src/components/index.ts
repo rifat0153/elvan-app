@@ -17,6 +17,9 @@ import Schedule from './Cart/Schedule';
 import ExpandButton from './Cart/ExpandButton';
 import TextIconButton from './Buttons/TextIconButton';
 import RadioButton from './Buttons/RadioButton';
+import Search from './FoodList/Search';
+import Sort from './FoodList/Sort';
+import PriceOptions from './FoodList/PriceOptions';
 
 export {
   FoodTile,
@@ -38,4 +41,7 @@ export {
   ExpandButton,
   TextIconButton,
   RadioButton,
+  Search,
+  Sort,
+  PriceOptions,
 };

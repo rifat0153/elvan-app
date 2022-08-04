@@ -21,6 +21,8 @@ import {Calculation} from '../components';
 import {RootStackParamList} from '../navigation/NavigationTypes';
 import {UseCartStore} from '../zustand/CartStore';
 import uuid from 'react-native-uuid';
+import { addDoc, collection } from 'firebase/firestore';
+import { db } from '../database/Firebase';
 
 const Height = Dimensions.get('window').height;
 type Props = NativeStackScreenProps<RootStackParamList>;
@@ -37,6 +39,7 @@ const CartList: FC<Props> = ({navigation}) => {
   useEffect(() => {
     setTotalPrice(cartStore.totalPrice);
   }, [cartStore]);
+
 
   const CartTiles = () => {
     return cartStore.cartItems.map(cartItem => {

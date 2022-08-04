@@ -61,6 +61,6 @@ const Styles = ScaledSheet.create({
   subTotal: {
     color: '#F0F5F9',
     fontSize: '16@s',
-    marginBottom: '5@s'
+    marginBottom: '5@s',
   },
 });
