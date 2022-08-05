@@ -10,6 +10,7 @@ import {UseFoodStore} from '../zustand/FoodMenuList';
 import {UseCategoriesStore} from '../zustand/Categories';
 import FetchAllData from '../database/FetchAllData';
 import Category from '../interfaces/Category';
+import AppBackground from '../AppBackground';
 
 type Props = NativeStackScreenProps<RootStackParamList>;
 const Height = Dimensions.get('window').height;
@@ -51,12 +52,7 @@ const Home: FC<Props> = ({navigation}) => {
   };
   return (
     <View>
-      <Image
-        style={{height: scale(Height), width: scale(350), position: 'absolute'}}
-        resizeMode="cover"
-        blurRadius={10}
-        source={require('../../assets/images/elvan.png')}
-      />
+      <AppBackground />
       <View style={Styles.cart}>
         <Cart onPress={() => navigation.navigate('CartList')} />
       </View>

@@ -13,6 +13,7 @@ import {UseFoodStore} from '../zustand/FoodMenuList';
 import {UseCartStore} from '../zustand/CartStore';
 import {UseModalStore} from '../zustand/ModalVisible';
 import {UseSortStore} from '../zustand/SortStore';
+import AppBackground from '../AppBackground';
 
 const Height = Dimensions.get('window').height;
 
@@ -97,12 +98,7 @@ const FoodList: FC<Props> = ({navigation}) => {
 
   return (
     <View>
-      <Image
-        style={{height: scale(Height), width: scale(350), position: 'absolute'}}
-        resizeMode="cover"
-        blurRadius={10}
-        source={require('../../assets/images/elvan.png')}
-      />
+      <AppBackground />
 
       <View style={Styles.cart}>
         <Cart onPress={() => navigation.navigate('CartList')} />

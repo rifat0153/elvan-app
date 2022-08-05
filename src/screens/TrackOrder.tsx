@@ -7,6 +7,7 @@ import {RootStackParamList} from '../navigation/NavigationTypes';
 import {UseCartStore} from '../zustand/CartStore';
 import {View as MotiView} from 'moti';
 import 'react-native-reanimated';
+import AppBackground from '../AppBackground';
 const Height = Dimensions.get('window').height;
 
 type Props = NativeStackScreenProps<RootStackParamList>;
@@ -48,12 +49,7 @@ const TrackOrder: FC<Props> = () => {
 
   return (
     <View>
-      <Image
-        style={{height: scale(Height), width: scale(350), position: 'absolute'}}
-        resizeMode="cover"
-        blurRadius={10}
-        source={require('../../assets/images/elvan.png')}
-      />
+      <AppBackground />
       <ScrollView>
         {/* //////////////////////////////////////////////////////////*/}
         <Text style={Styles.text}>Your food is preparing</Text>

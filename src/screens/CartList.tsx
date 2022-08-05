@@ -21,8 +21,9 @@ import {Calculation} from '../components';
 import {RootStackParamList} from '../navigation/NavigationTypes';
 import {UseCartStore} from '../zustand/CartStore';
 import uuid from 'react-native-uuid';
-import { addDoc, collection } from 'firebase/firestore';
-import { db } from '../database/Firebase';
+import {addDoc, collection} from 'firebase/firestore';
+import {db} from '../database/Firebase';
+import AppBackground from '../AppBackground';
 
 const Height = Dimensions.get('window').height;
 type Props = NativeStackScreenProps<RootStackParamList>;
@@ -40,7 +41,6 @@ const CartList: FC<Props> = ({navigation}) => {
     setTotalPrice(cartStore.totalPrice);
   }, [cartStore]);
 
-
   const CartTiles = () => {
     return cartStore.cartItems.map(cartItem => {
       return (
@@ -52,12 +52,7 @@ const CartList: FC<Props> = ({navigation}) => {
   };
   return (
     <View>
-      <Image
-        style={{height: scale(Height), width: scale(350), position: 'absolute'}}
-        resizeMode="cover"
-        blurRadius={10}
-        source={require('../../assets/images/elvan.png')}
-      />
+      <AppBackground />
       <ScrollView>
         <View>{CartTiles()}</View>
         <View style={Styles.Calculation}>
@@ -67,14 +62,10 @@ const CartList: FC<Props> = ({navigation}) => {
         </View>
 
         <Schedule />
-
-        <View style={Styles.next}>
+        <View style={{marginTop: scale(120)}}>
           <TextButton
             text="Next"
-            height={50}
-            width={333}
-            color="#F0F5F9"
-            bcolor="#E5251A"
+            type="long"
             onPress={() => navigation.navigate('MakePayment')}
           />
         </View>

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "657975530065",
+    "firebase_url": "https://restaurantpickup-6d5ee-default-rtdb.firebaseio.com",
+    "project_id": "restaurantpickup-6d5ee",
+    "storage_bucket": "restaurantpickup-6d5ee.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:657975530065:android:560ff8faefc93355af5e70",
+        "android_client_info": {
+          "package_name": "com.restaurantpickup"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "657975530065-073g3nejkuum4a92r3l8goql71q9obue.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAp7TkONsFMgKJ2xKP1HSnuc6OLwi3wec8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "657975530065-073g3nejkuum4a92r3l8goql71q9obue.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

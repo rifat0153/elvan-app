@@ -10,6 +10,7 @@ import {
   ScrollView,
 } from 'react-native';
 import {scale, ScaledSheet} from 'react-native-size-matters';
+import AppBackground from '../AppBackground';
 import {
   CartTile,
   ExpandButton,
@@ -38,12 +39,7 @@ const MakePayment: FC<Props> = ({navigation}) => {
 
   return (
     <View>
-      <Image
-        style={{height: scale(Height), width: scale(350), position: 'absolute'}}
-        resizeMode="cover"
-        blurRadius={10}
-        source={require('../../assets/images/elvan.png')}
-      />
+      <AppBackground />
       <ScrollView>
         <View style={Styles.Calculation}>
           <Calculation
@@ -53,13 +49,10 @@ const MakePayment: FC<Props> = ({navigation}) => {
 
         <ExpandButton />
 
-        <View style={Styles.next}>
+        <View style={{marginTop: scale(120)}}>
           <TextButton
             text="Confirm Payment"
-            height={50}
-            width={333}
-            color="#F0F5F9"
-            bcolor="#E5251A"
+            type="long"
             onPress={() => navigation.navigate('TrackOrder')}
           />
         </View>
@@ -75,10 +68,5 @@ const Styles = ScaledSheet.create({
     marginTop: '20@s',
     width: '315@s',
     marginLeft: '16@s',
-  },
-
-  next: {
-    alignSelf: 'center',
-    marginTop: '120@s',
   },
 });
