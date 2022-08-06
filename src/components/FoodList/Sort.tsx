@@ -20,7 +20,6 @@ const Sort: FC = props => {
   const sortStore = UseSortStore();
   const foodStore = UseFoodStore();
   const Apply = () => {
-    
     if (sortStore.priceOrder == 'High to Low') {
       foodStore.FoodItems.sort((a, b) => b.price - a.price);
     }
@@ -43,8 +42,6 @@ const Sort: FC = props => {
         <View style={{marginLeft: 20, marginBottom: 21}}>
           <TextButton
             text={item}
-            height={35}
-            width={120}
             color={selectedSortBy != item ? '#2A2630' : '#F0F5F9'}
             bcolor={selectedSortBy != item ? '#E5251A4D' : '#E5251A'}
             onPress={() => setSelectedSortBy(item)}

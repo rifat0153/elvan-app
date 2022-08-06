@@ -12,4 +12,6 @@ export type RootStackParamList = {
   CartList: undefined;
   MakePayment: undefined;
   TrackOrder: undefined;
+  SignIn: undefined;
+  SignUp: undefined;
 };

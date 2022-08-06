@@ -20,6 +20,7 @@ import RadioButton from './Buttons/RadioButton';
 import Search from './FoodList/Search';
 import Sort from './FoodList/Sort';
 import PriceOptions from './FoodList/PriceOptions';
+import TextField from './Input/TextField';
 
 export {
   FoodTile,
@@ -44,4 +45,5 @@ export {
   Search,
   Sort,
   PriceOptions,
+  TextField,
 };

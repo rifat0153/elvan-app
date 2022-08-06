@@ -15,11 +15,10 @@ const AddOnButton: FC<Props> = props => {
 
   useEffect(() => {
     if (selectedItem) {
-      useAddOnStore.EmptyItems()
+      useAddOnStore.EmptyItems();
       useAddOnStore.AddItem({name: selectedItem, price: 0});
-    }
-    else{
-      useAddOnStore.EmptyItems()
+    } else {
+      useAddOnStore.EmptyItems();
     }
   }, [selectedItem]);
 
@@ -29,8 +28,6 @@ const AddOnButton: FC<Props> = props => {
         <View style={{marginLeft: 20, marginBottom: 21}}>
           <TextButton
             text={item.name}
-            height={35}
-            width={120}
             color={selectedItem != item.name ? '#2A2630' : '#F0F5F9'}
             bcolor={selectedItem != item.name ? '#E5251A4D' : '#E5251A'}
             onPress={() => setSelectedItem(item.name)}

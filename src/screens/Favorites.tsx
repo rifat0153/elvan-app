@@ -1,6 +1,7 @@
 import React, {FC, useEffect} from 'react';
 import {Dimensions, Image, ScrollView, Text, View} from 'react-native';
 import {scale, ScaledSheet} from 'react-native-size-matters';
+import AppBackground from '../AppBackground';
 import {FoodTile} from '../components';
 import Food from '../interfaces/Food';
 import {UseFavoritesStore} from '../zustand/FavoritesList';
@@ -31,12 +32,7 @@ const Favorites: FC = () => {
   };
   return (
     <View>
-      <Image
-        style={{height: scale(Height), width: scale(350), position: 'absolute'}}
-        resizeMode="cover"
-        blurRadius={10}
-        source={require('../../assets/images/elvan.png')}
-      />
+      <AppBackground />
       <ScrollView>
         <View>{FoodTiles()}</View>
       </ScrollView>
